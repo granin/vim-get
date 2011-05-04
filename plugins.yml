@@ -1,4 +1,60 @@
 plugins:
+  netwr:
+      git: git://github.com/vim-scripts/netrw.vim.git
+  vim-align:
+      git: git://github.com/tsaleh/vim-align.git
+  vimwiki:
+      git: git://github.com/vim-scripts/vimwiki.git
+  ZoomWin:
+      git: git://github.com/vim-scripts/ZoomWin.git
+  Color-Sampler-Pack:
+    git: git://github.com/vim-scripts/Color-Sampler-Pack.git
+  jslint.vim:
+    git: git://github.com/hallettj/jslint.vim.git
+  hammer.vim:
+    git: git://github.com/robgleeson/hammer.vim.git
+  rvm_ruby.vim:
+    git: git://github.com/jcf/rvm_ruby.vim.git
+  MailApp:
+    git: git://github.com/vim-scripts/MailApp.git
+  ScrollColors:
+    git: git://github.com/vim-scripts/ScrollColors.git
+  translit_converter:
+    git: git://github.com/vim-scripts/translit_converter.git
+  vim-ragtag:
+    git: git://github.com/tpope/vim-ragtag.git
+  vim-bufexplorer:
+    git: git://github.com/slack/vim-bufexplorer.git
+  vim-colors-solarized:
+    git: git://github.com/altercation/vim-colors-solarized.git
+  vim-coffee-script:
+    git: git://github.com/kchmck/vim-coffee-script.git
+  vim-easymotion:
+    git: git://github.com/Lokaltog/vim-easymotion.git
+  gist-vim:
+    git: git://github.com/mattn/gist-vim.git
+  vim-jquery:
+    git: git://github.com/itspriddle/vim-jquery.git
+  vim-indent-object:
+    git: git://github.com/michaeljsmith/vim-indent-object.git
+  vim-pastie:
+    git: git://github.com/tpope/vim-pastie.git
+  vim-padrino:
+    git: git://github.com/gerardc/vim-padrino.git
+  vim-repeat:
+    git: git://github.com/tpope/vim-repeat.git
+  vim-speeddating:
+    git: git://github.com/tpope/vim-speeddating.git
+  vim-markdown:
+    git: git://github.com/tpope/vim-markdown.git
+  scss-syntax.vim:
+    git: git://github.com/cakebaker/scss-syntax.vim.git
+  sparkup:
+    git: git://github.com/rstacruz/sparkup.git
+  vim-outliner:
+    git: git://github.com/sophacles/vim-outliner.git
+  vim-slim:
+    git: git://github.com/bbommarito/vim-slim.git
   vim-rails:
     git: git://github.com/tpope/vim-rails.git
   vim-cucumber:
@@ -49,3 +105,5 @@ plugins:
     git: git://github.com/nelstrom/gundo.vim.git
   conque:
     svn: http://conque.googlecode.com/svn/trunk/
+  
+
