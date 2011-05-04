@@ -813,7 +813,7 @@ vmap <C-Up> [egv
 vmap <C-Down> ]egv
 
 " Toggle spell checking on and off with `,y`
-nmap <silent> <leader>y :set spell!<CR>
+nmap <silent> <leader>S :set spell!<CR>
  
 " исправить отступы при вставке из внешнего буфера
 "nnoremap <silent>,p u:set paste<CR>.:set nopaste<CR>:echo "pasted text fixed"<CR>
