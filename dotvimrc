@@ -5,6 +5,7 @@
 
 let mapleader = ","
 set wildmenu
+"long autocompletion: from peepcode vim1
 set wildmode=list:longest,full
 set autowriteall
 
@@ -65,6 +66,12 @@ try
 catch
 endtry
 
+" Whitespace stuff
+" make uses real tabs   
+au FileType make set noexpandtab
+
+syntax match Tab /\t/
+set nowrap
 function! Tabstyle_tabs()
   " Using 4 column tabs
   set softtabstop=4
@@ -94,6 +101,7 @@ endif
 " Indenting *******************************************************************
 set ai " Automatically set the indent of a new line (local to buffer)
 set si " smartindent  (local to buffer)
+
 
 " Scrollbars ******************************************************************
 set sidescrolloff=2
@@ -130,9 +138,21 @@ set statusline=%<%F%h%m%r%h%w%y\ %{&ff}\ %{strftime(\"%d/%m/%Y-%H:%M\")}\ %{exis
 set laststatus=2
 
 " Line Wrapping ***************************************************************
-set nowrap
+"http://vim.wikia.com/wiki/Word_wrap_without_line_breaks
+"When editing a text file, if you want word wrapping, but only want line breaks inserted when you explicitly press the Enter key: 
+set wrap  " попросим Vim переносить длинные строки
+set nolist  " list disables linebreak
 set linebreak " Wrap at word
 set showbreak=…
+"
+"In addition, you will need to prevent Vim from automatically inserting line breaks in newly entered text. The easiest way to do this is: 
+
+:set textwidth=0
+:set wrapmargin=0
+
+"If you want to keep your existing 'textwidth' settings for most lines in your file, but not have Vim automatically reformat when typing on existing lines, you can do this with: 
+
+:set formatoptions+=l
 
 " Mappings ********************************************************************
 " Professor VIM says '87% of users prefer jj over esc', jj abrams strongly disagrees
@@ -170,13 +190,21 @@ set sessionoptions=blank,buffers,curdir,folds,help,resize,tabpages,winsize
 " Misc ************************************************************************
 set backspace=indent,eol,start
 set number " Show line numbers
-set matchpairs+=<:>
 set vb t_vb= " Turn off the bell, this could be more annoying, but I'm not sure how
 
+" подсвечивать некоторые символы
 " Set list Chars - for showing characters that are not
 " normally displayed i.e. whitespace, tabs, EOL
 nmap <unique><leader>l :set list!<CR>
-set listchars=tab:▸\ ,eol:¬
+" установим символы для подсветки
+if has("unix")
+    set listchars=tab:❘-,trail:·,extends:»,precedes:«,nbsp:×
+else
+    set listchars=tab:+-,trail:?,extends:>,precedes:<,nbsp:?
+endif
+"Показываем табы в начале строки точками
+set listchars=:▸\ ,eol:¬
+"set listchars=tab:··
 
 " Mouse ***********************************************************************
 "set mouse=a " Enable the mouse
@@ -241,13 +269,16 @@ let g:yankring_history_dir = expand('$HOME/.vim/tmp')
 
 " Command-T *******************************************************************
 let g:CommandTMatchWindowAtTop = 1
-set wildignore+=*~,.DS_Store,*.class,*.gif,*.png,*.sqlite3
+set wildignore+=*~,.DS_Store,*.class,*.gif,*.png,*.sqlite3 ,*.o,*.obj,.git,*.rbc
 
 " Gundo ***********************************************************************
 nmap <silent> <unique> <leader>u :GundoToggle<CR>
 
 " autocomplpop ****************************************************************
 " complete option
+" settings for completion 
+" like
+set complete=.,w,b,t
 "set complete=.,w,b,u,t,k
 "let g:AutoComplPop_CompleteOption = '.,w,b,u,t,k'
 "set complete=.
@@ -302,3 +333,556 @@ syntax enable
 filetype plugin on
 set ofu=syntaxcomplete#Complete
 
+"====================================
+"====================================
+"====================================
+"call pathogen#runtime_append_all_bundles()
+"bufferexplorer plugin
+" let g:bufExplorerShowRelativePath=1
+"
+"
+"====================================
+"====================================
+"====================================
+" отключить автоматическое открытие новой строки комментария
+" set formatoptions-=o
+
+" Convenient command to see the difference between the current buffer and the
+" file it was loaded from, thus the changes you made.
+" Only define it when not defined already.
+if !exists(":DiffOrig")
+  command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
+          \ | wincmd p | diffthis
+endif
+" MacVIM shift+arrow-keys behavior (required in .vimrc)
+if has("gui_macvim")
+    let macvim_hig_shift_movement = 1
+endif
+ 
+ 
+" сохранять умные резервные копии ежедневно
+function! BackupDir()
+    " определим каталог для сохранения резервной копии
+    let l:backupdir=$HOME.'/.vim/backup/'.
+            \substitute(expand('%:p:h'), '^'.$HOME, '~', '')
+ 
+    " если каталог не существует, создадим его рекурсивно
+    if !isdirectory(l:backupdir)
+        call mkdir(l:backupdir, 'p', 0700)
+    endif
+ 
+    " переопределим каталог для резервных копий
+    let &backupdir=l:backupdir
+ 
+    " переопределим расширение файла резервной копии
+    let &backupext=strftime('~%Y-%m-%d~')
+endfunction
+ 
+" выполним перед записью буффера на диск
+autocmd! bufwritepre * call BackupDir()
+ 
+ 
+" хранить больше истории команд ...
+set history=128     " keep 50 lines of command line history
+ 
+" ... и правок
+set undolevels=2048
+ 
+" меньше приоритета бинарным файлам при автодополнении
+set suffixes+=.png,.gif,.jpg,.jpeg,.ico
+ 
+" информация о положении курсора в строке статуса
+"set statusline+=%=Col:%3*%03c%*\ Ln:%3*%04l/%04L%*
+" информация о типе и атрибутах файла в строке статуса
+"set statusline+=%(\ File:%3*%{join(filter([&filetype,&fileformat!=split(&fileformats,\",\")[0]?&fileformat:\"\",&fileencoding!=split(&fileencodings,\",\")[0]?&fileencoding:\"\"],\"!empty(v:val)\"),\"/\")}%*%)
+" показывать имя буфера в заголовке терминала
+set title
+" формат заголовка
+set titlestring=%t%(\ %m%)%(\ %r%)%(\ %h%)%(\ %w%)%(\ (%{expand(\"%:p:~:h\")})%)\ -\ VIM
+
+" удалять лишние пробелы при отступе
+set shiftround
+ 
+" не менять позицию курсора при прыжках по буферу
+set nostartofline
+ 
+" расстояние до края при вертикальной прокрутке
+" When the page starts to scroll, keep the cursor 8 lines from
+" the top and 8 lines from the bottom
+set scrolloff=8
+ 
+" размер прыжка при вертикальной прокрутке
+set scrolljump=10 
+" расстояние до края при горизонтальной прокрутке
+"set sidescrolloff=3
+ 
+" размер прыжка при горизонтальной прокрутке
+set sidescroll=10
+ 
+" разбивать окно горизонтально снизу
+"set splitbelow
+ 
+" разбивать окно вертикально справа
+"set splitright
+ 
+" не выравнивать размеры окон при закрытии
+"set noequalalways
+ 
+" не вставлять лишних пробелов при объединении строк
+set nojoinspaces
+" показывать совпадающие скобки для HTML-тегов
+set matchpairs+=<:>
+ 
+" сделать строку команд больше
+set cmdheight=2
+ 
+" сделать окно команд больше
+set cmdwinheight=16
+ 
+" показывать строку вкладок всегда
+set showtabline=2
+ 
+" показывать строку статуса всегда
+" tell Vim to always put a status line in, even if there is only one
+" window
+"set laststatus=2
+ 
+" информация о флагах файла и его пути в строке статуса
+"set statusline=%1*%m%*%2*%r%*%3*%h%w%*%{expand(\"%:p:~\")}\ %<
+ 
+"Порядок применения кодировок и формата файлов
+ 
+set ffs=unix,dos,mac
+set fencs=utf-8,cp1251,koi8-r,ucs-2,cp866
+
+
+" Remember last location in file
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+    \| exe "normal g'\"" | endif
+endif
+
+" Syntax coloring lines that are too long just slows down the world
+set synmaxcol=2048
+" This is the timeout used while waiting for user input on a
+" multi-keyed macro or while just sitting and waiting for another
+" key to be pressed measured in milliseconds.
+"
+" i.e. for the ",d" command, there is a "timeoutlen" wait
+"      period between the "," key and the "d" key.  If the
+"      "d" key isn't pressed before the timeout expires,
+"      one of two things happens: The "," command is executed
+"      if there is one (which there isn't) or the command aborts.
+"
+" The idea here is that if you have two commands, say ",dv" and
+" ",d" that it will take 'timeoutlen' milliseconds to recognize
+" that you're going for ",d" instead of ",dv"
+"
+" In general you should endeavour to avoid that type of
+" situation because waiting 'timeoutlen' milliseconds is
+" like an eternity.
+set timeoutlen=500
+
+
+" These commands open folds
+set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
+
+
+" Allow the cursor to go in to "invalid" places
+set virtualedit=all
+
+
+
+
+
+
+
+
+
+
+
+
+" Make command line two lines high
+set ch=1
+
+" set visual bell -- I hate that damned beeping
+" убираем звук переключения раскладки
+set vb
+
+" allow backspacing over everything in insert mode
+" Allow backspacing over indent, eol, and the start of an insert
+set backspace=2 "set backspace=indent,eol,start
+
+" See :help 'cpoptions' for these ones.  'cpoptions' has a huge
+" set of possible options
+set cpoptions=ces$
+
+" Set the status line the way I like it
+set stl=%f\ %m\ %r\ Line:\ %l/%L[%p%%]\ Col:\ %c\ Buf:\ #%n\ [%b][0x%B]
+
+
+" Hide the mouse pointer while typing
+set mousehide
+
+" The GUI (i.e. the 'g' in 'gvim') is fantastic, but let's not be
+" silly about it :)  The GUI is fantastic, but it's fantastic for
+" its fonts and its colours, not for its toolbar and its menus -
+" those just steal screen real estate
+set guioptions=ac
+"BASIC
+"=====================
+" http://www.derekwyatt.org/vim/the-vimrc-file/the-absolute-bare-minimum/
+" Use Vim settings, rather then Vi settings (much better!).
+" This must be first, because it changes other options as a side effect.
+" Forget being compatible with good ol' vi
+set nocompatible
+" MISC
+"=====================
+"http://www.derekwyatt.org/vim/the-vimrc-file/better-settings/
+" Set the search scan to wrap around the file
+set wrapscan
+
+" Set the forward slash to be the slash of note.  Backslashes suck
+" This is really only applicable to Windows but I like to have a vimrc
+" that works no matter what OS I'm currently on
+set shellslash
+
+"Mac OS X clipboard sharing
+set clipboard=unnamed
+
+"================
+"================
+" Get that filetype stuff happening
+" load the plugin and indent settings for the detected filetype 
+filetype on
+filetype plugin on
+filetype indent on
+
+" Turn on that syntax highlighting
+syntax on
+
+" не выгружать скрытые буферы
+set hidden
+"
+" Don't update the display while executing macros
+set lazyredraw
+"set lz " ленивая перерисовка экрана при выполнении скриптов
+
+
+" At least let yourself know what mode you're in
+set showmode
+
+" Enable enhanced command-line completion. Presumes you have compiled
+" with +wildmenu.  See :help 'wildmenu'
+set wildmenu
+"================
+" In many terminal emulators the mouse works just fine, thus enable it.
+if has('mouse')
+  set mouse=a
+endif
+ 
+set ruler       " show the cursor position all the time
+set showcmd     " display incomplete commands
+set incsearch       " do incremental searching
+"
+ 
+" allow backspacing over everything in insert mode
+set backspace=indent,eol,start
+ let g:PreviewBrowsers=' firefox,safari,epiphany,google-chrome,opera' 
+ let g:PreviewCSSPath='/path/to/css/file'
+ let g:PreviewTextileExt='textile,txt'
+
+"================
+" Searching
+set incsearch
+set smartcase
+"Далее настроим поиск и подсветку результатов поиска и совпадения скобок
+set showmatch 
+set hlsearch
+set ignorecase
+set smartcase " Vim ищет игнорируя регистр если искомое выражение не содержит большие буквы, в противном случае учитывает регистр.
+"
+" Incrementally match the search.  I orignally hated this
+" but someone forced me to live with it for a while and told
+" me that I would grow to love it after getting used to it...
+" turns out he was right :)
+set incsearch
+
+
+
+"================
+set ai " включим автоотступы для новых строк
+" перечитывать изменённые файлы автоматически
+set autoread
+if has("unix")
+ 
+    " кодировка по-умолчанию
+    set encoding=utf-8
+ 
+endif
+ 
+" порядок перебора кодировок
+set fileencodings=utf-8,windows-1251,iso-8859-15,koi8-r
+ 
+" порядок перебора типов EOL
+set fileformats=unix,dos,mac
+ 
+" максимальное число вкладок
+set tabpagemax=99
+ 
+ 
+if has("folding")
+ 
+    " сворачивать по отступам
+    set foldmethod=indent
+ 
+    " не сворачивать рекурсивно
+    set foldlevel=99
+endif
+" Set region to British English
+" и русский
+:setlocal spell spelllang=ru,en_us
+"
+"
+" хранить swap в отдельном каталоге
+set directory=~/.vim/swap/
+" включить сохранение резервных копий
+set backup
+"backup system 
+" Directories for swp files
+set backupdir=~/.vim/backup
+set directory=~/.vim/backup
+
+"=========================================
+"=====VISUAL APEARANCE====================
+"=========================================
+" Underlining search results in vim (instead of highlighting them)
+hi Tab gui=underline guifg=blue ctermbg=blue 
+
+"no extension files are what? otl! 
+au BufNewFile,BufRead * if &ft == '' | set ft=otl | endif
+
+" Default color scheme
+"color solarized
+
+" --- подсветка ---
+ 
+" подсветка строки статуса
+highlight user1 term=bold cterm=inverse,bold ctermbg=green gui=inverse,bold guibg=#8AE234
+highlight user2 term=bold cterm=inverse,bold ctermbg=red gui=inverse,bold guibg=#EF2929
+highlight user3 term=bold cterm=inverse,bold ctermbg=blue gui=inverse,bold guibg=#729FCF
+" подсветка непечатаемых символов
+highlight specialkey ctermfg=lightgray guifg=#D3D7CF
+highlight nontext ctermfg=gray guifg=#D3D7CF
+ 
+" подсветка вкладок
+highlight tabline term=none cterm=none ctermbg=lightgray gui=none guibg=#D3D7CF
+highlight tablinefill term=none cterm=none ctermbg=lightgray gui=none guibg=#D3D7CF
+ 
+
+" --- аббревиатуры ---
+ 
+" дизайнерская рыба
+inoreabbrev lorem Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.<C-O>:call EatChar()<CR>
+" autocorrection 
+iab US United States
+iab seva Seva
+iab sadhana Sadhana
+iab satsang Satsang
+"REMAPS
+"==========================================
+let mapleader = ","
+let maplocalleader = ","
+"RagTag
+ "=====================
+        inoremap <M-o>       <Esc>o
+        inoremap <C-j>       <Down>
+        let g:ragtag_global_maps = 1
+"==========================================
+"  Markdown to HTML
+nmap <leader>md :%!/usr/local/bin/Markdown.pl --html4tags <cr>
+
+"Color change
+map <silent>\n :NEXTCOLOR<cr>
+map <silent>\p :PREVCOLOR<cr> 
+"WINDOWS
+"=========================================
+"http://www.derekwyatt.org/vim/the-vimrc-file/walking-around-your-windows/
+" Move the cursor to the window left of the current one
+noremap <silent> ,y :wincmd h<cr>
+"noremap <silent> ,h :wincmd h<cr>
+"noremap <silent> ,u :wincmd h<cr>
+
+" Move the cursor to the window below the current one
+"noremap <silent> ,j :wincmd j<cr>
+
+" Move the cursor to the window above the current one
+"noremap <silent> ,k :wincmd k<cr>
+
+" Move the cursor to the window right of the current one
+noremap <silent> ,l :wincmd l<cr>
+
+" Close the window below this one
+noremap <silent> ,sj :wincmd j<cr>:close<cr>
+
+" Close the window above this one
+noremap <silent> ,sk :wincmd k<cr>:close<cr>
+
+" Close the window to the left of this one
+noremap <silent> ,sh :wincmd h<cr>:close<cr>
+
+" Close the window to the right of this one
+noremap <silent> ,sl :wincmd l<cr>:close<cr>
+
+" Close the current window
+noremap <silent> ,sc :close<cr>
+
+" Move the current window to the right of the main Vim window
+noremap <silent> ,el <C-W>L
+
+" Move the current window to the top of the main Vim window
+noremap <silent> ,ek <C-W>K
+
+" Move the current window to the left of the main Vim window
+noremap <silent> ,eh <C-W>H
+
+" Move the current window to the bottom of the main Vim window
+noremap <silent> ,ej <C-W>J
+
+"=========================================
+"EDIT / SOURCES FILES
+map ,v :vsp $MYVIMRC<CR>
+
+autocmd! bufwritepost $VIM/.vimrc source $VIM/.vimrc
+" And to source this file as well (mnemonic for the key sequence is
+" 's'ource 'v'imrc)
+"nmap <silent> ,sv :so $MYVIMRC<cr>
+map ,V :source $MYVIMRC<CR>
+autocmd! bufwritepost $VIM/.vimrc source $VIM/.vimrc
+
+"TOGGLES
+"=====================
+"http://www.derekwyatt.org/vim/the-vimrc-file/toggling-and-shortening/
+
+" Turn off that stupid highlight search
+nmap  <silent> <leader>z  :set invhlsearch
+" Set text wrapping toggles
+nmap  ,w :set invwrap:set wrap?
+" Set up retabbing on a source file
+nmap  ,rr :1,$retab
+
+" cd to the directory containing the file in the buffer
+nmap  ,cd :lcd %:h
+                                                       
+" Make the directory that contains the file in the current buffer.
+" This is useful when you edit a file in a directory that doesn't
+" (yet) exist
+nmap  ,md :!mkdir -p %:p:h
+"
+"=====================
+" NERDTree configuration
+let NERDTreeIgnore=['\.rbc$', '\~$']
+map <Leader>t :NERDTreeToggle<CR>
+ 
+" ZoomWin configuration
+map <Leader><Leader> :ZoomWin<CR>
+
+" CTags
+map <Leader>rt :!ctags --extra=+f -R *<CR><CR>
+
+
+" Opens an edit command with the path of the currently edited file filled in
+" Normal mode: <Leader>e
+map <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
+
+" Opens a tab edit command with the path of the currently edited file filled in
+" Normal mode: <Leader>t
+map <Leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
+
+" Inserts the path of the currently edited file into a command
+"zsh:1: command not found: m
+" Command mode: Ctrl+P
+cmap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
+
+" Unimpaired configuration
+" Bubble single lines
+nmap <C-Up> [e
+nmap <C-Down> ]e
+" Bubble multiple lines
+vmap <C-Up> [egv
+vmap <C-Down> ]egv
+
+" Toggle spell checking on and off with `,y`
+nmap <silent> <leader>y :set spell!<CR>
+ 
+" исправить отступы при вставке из внешнего буфера
+"nnoremap <silent>,p u:set paste<CR>.:set nopaste<CR>:echo "pasted text fixed"<CR>
+ 
+" сохранять выделение при визуальном изменении отступа
+vnoremap < <gv
+vnoremap > >gv
+ 
+" более логичное копирование во внутренний буфер
+nnoremap Y y<END>
+ 
+" более логичная запись макроса
+nnoremap Q qq
+ 
+ 
+" поиск слова под курсором не целиком
+ 
+"nnoremap * g*N
+ 
+ 
+"nnoremap # g#N
+ 
+" не перепрыгивать через длинные строки при включённом переносе строк
+nnoremap j gj
+nnoremap k gk
+vnoremap j gj
+vnoremap k gk
+nnoremap <DOWN> gj
+nnoremap <UP> gk
+vnoremap <DOWN> gj
+vnoremap <UP> gk
+inoremap <DOWN> <C-O>gj
+inoremap <UP> <C-O>gk
+ 
+" сохранять строку курсора при page up/down
+nnoremap <PAGEUP> <C-U>
+nnoremap <PAGEDOWN> <C-D>
+inoremap <PAGEUP> <C-O><C-U>
+inoremap <PAGEDOWN> <C-O><C-D>
+vnoremap <PAGEUP> <C-U>
+vnoremap <PAGEDOWN> <C-D>
+ 
+"Insert newline without entering insert mode
+map <S-Enter> O<Esc>
+map <S-M-Enter> o<Esc>
+nnoremap <C-J> ciW<CR><Esc>:if match( @", "^\\s*$") < 0<Bar>exec "norm P-$diw+"<Bar>endif<CR>
+ 
+"(Shift)Enter to toggle INSERT
+function! ToggleEnterMapping()
+  if empty(mapcheck('<CR>', 'i'))
+    inoremap <CR> <Esc>`^
+    return "\<Esc>"
+  else
+    iunmap <CR>
+    return "\<CR>"
+  endif
+endfunction
+call ToggleEnterMapping()
+
+inoremap <expr> <S-CR> ToggleEnterMapping()
+" Optional (so <CR> cancels prefix, selection, operator).
+nnoremap <CR> <Esc>
+vnoremap <CR> <Esc>gV
+onoremap <CR> <Esc>
+ 
+ 
+" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
+" so that you can undo CTRL-U after inserting a line break.
+inoremap <C-U> <C-G>u<C-U>
+"пробелом перехд из normal в insert mode
+:nm <Space> i   
+ 
