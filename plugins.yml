@@ -105,5 +105,6 @@ plugins:
     git: git://github.com/nelstrom/gundo.vim.git
   conque:
     svn: http://conque.googlecode.com/svn/trunk/
-  
+  vim-peepopen:
+    git: git://github.com/shemerey/vim-peepopen.git  
 

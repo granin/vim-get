@@ -203,7 +203,7 @@ else
     set listchars=tab:+-,trail:?,extends:>,precedes:<,nbsp:?
 endif
 "Показываем табы в начале строки точками
-set listchars=:▸\ ,eol:¬
+set listchars=tab:▸\ ,eol:¬
 "set listchars=tab:··
 
 " Mouse ***********************************************************************
@@ -269,7 +269,7 @@ let g:yankring_history_dir = expand('$HOME/.vim/tmp')
 
 " Command-T *******************************************************************
 let g:CommandTMatchWindowAtTop = 1
-set wildignore+=*~,.DS_Store,*.class,*.gif,*.png,*.sqlite3 ,*.o,*.obj,.git,*.rbc
+set wildignore+=*~,.DS_Store,*.class,*.gif,*.png,*.sqlite3,*.o,*.obj,.git,*.rbc
 
 " Gundo ***********************************************************************
 nmap <silent> <unique> <leader>u :GundoToggle<CR>
