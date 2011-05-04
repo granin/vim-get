@@ -33,7 +33,7 @@ set nocompatible
 " Shortcuts********************************************************************
 nmap <silent> <unique> <leader>w :w<CR>
 nmap <silent> <unique> <leader>x "*x
-nmap <silent> <unique> <leader>p "*p
+nmap <silent> <unique> <leader>P "*p
 nmap <silent> <unique> <C-S-Down> :A<CR>
 nmap <silent> <unique> <Space> <PageDown>
 nmap <silent> <unique> <S-Space> <PageUp>
