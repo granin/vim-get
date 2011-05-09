@@ -1,3 +1,5 @@
+
+
 " -----------------------------------------------------------------------------
 " | VIM Settings |
 " | (see gvimrc for gui vim settings) |
@@ -30,20 +32,39 @@ endif
 
 set nocompatible
 
+                                 
 " Shortcuts********************************************************************
-nmap <silent> <unique> <leader>w :w<CR>
-nmap <silent> <unique> <leader>x "*x
+"nmap <silent> <unique> <C-S-Down> :A<CR>
+nmap <silent> <unique> <leader>s :w<CR>
+nmap <silent> <unique> <leader>q :wa<CR>:qa<CR>
+nmap <silent> <unique> <leader>Z "*x
 nmap <silent> <unique> <leader>P "*p
-nmap <silent> <unique> <C-S-Down> :A<CR>
 nmap <silent> <unique> <Space> <PageDown>
 nmap <silent> <unique> <S-Space> <PageUp>
 nmap <silent> <unique> <C-S-Left> <C-o>
 nmap <silent> <unique> <C-S-Right> <C-i>
+
+"variable %% for all commands below
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
-nmap <unique> <leader>ew :e %%
-nmap <unique> <leader>es :sp %%
-nmap <unique> <leader>ev :vsp %%
-nmap <unique> <leader>et :tabe %%
+" Opens an edit command with the path of the currently edited file filled in
+" Normal mode: <Leader>e
+nmap <unique> <leader>aw :e %%
+
+" Opens a tab edit command with the path of the currently edited file filled in
+" Normal mode: <Leader>t
+nmap <unique> <leader>at :tabe %%
+nmap <unique> <leader>as :sp %%
+nmap <unique> <leader>av :vsp %%
+
+" cd to the directory containing the file in the buffer
+nmap <unique> <leader>ac :lcd %:h
+" cd to the ~/txt directory 
+nmap <unique> <leader>ar :lcd ~/txt
+
+" Make the directory that contains the file in the current buffer.
+" This is useful when you edit a file in a directory that doesn't
+" (yet) exist     
+nmap <unique> <leader>am :!mkdir -p %:p:h
 
 " Tabs ************************************************************************
 "set sta " a <Tab> in an indent inserts 'shiftwidth' spaces
@@ -92,7 +113,7 @@ function! Tabstyle_spaces()
   set expandtab
 endfunction
 
-if hostname() == "Laptop.local"
+if hostname() == "Misha-Granins-MacBook-Air.local"
   call Tabstyle_tabs()
 else
   call Tabstyle_spaces()
@@ -112,8 +133,8 @@ set equalalways " Multiple windows, when created, are equal in size
 set splitbelow splitright
 
 "Vertical split then hop to new buffer
-:noremap <leader>v :vsp^M^W^W<cr>
-:noremap <leader>h :split^M^W^W<cr>
+:noremap -V :vsp^M^W^W<cr>
+":noremap -n :split^M^W^W<cr>"no nerd - works by default
 
 " Cursor highlights ***********************************************************
 set cursorline
@@ -178,10 +199,6 @@ filetype plugin indent on
 
 autocmd FileType html :set filetype=xhtml " we couldn't care less about html
 
-" Inser New Line **************************************************************
-map <S-Enter> O<ESC> " awesome, inserts new line without going into insert mode
-map <Enter> o<ESC>
-set fo-=r " do not insert a comment leader after an enter, (no work, fix!!)
 
 " Sessions ********************************************************************
 " Sets what is saved when you save a session
@@ -195,7 +212,7 @@ set vb t_vb= " Turn off the bell, this could be more annoying, but I'm not sure 
 " подсвечивать некоторые символы
 " Set list Chars - for showing characters that are not
 " normally displayed i.e. whitespace, tabs, EOL
-nmap <unique><leader>l :set list!<CR>
+nmap <unique><leader>i :set list!<CR>
 " установим символы для подсветки
 if has("unix")
     set listchars=tab:❘-,trail:·,extends:»,precedes:«,nbsp:×
@@ -207,19 +224,12 @@ set listchars=tab:▸\ ,eol:¬
 "set listchars=tab:··
 
 " Mouse ***********************************************************************
-"set mouse=a " Enable the mouse
+" In many terminal emulators the mouse works just fine, thus enable it.
+if has('mouse')
+  set mouse=a
+endif
 "behave xterm
 "set selectmode=mouse
-
-" " Cursor Movement *************************************************************
-" " Make cursor move by visual lines instead of file lines (when wrapping)
-" map <up> gk
-" map k gk
-" imap <up> <C-o>gk
-" map <down> gj
-" map j gj
-" imap <down> <C-o>gj
-" map E ge
 
 " Ruby stuff ******************************************************************
 compiler ruby " Enable compiler support for ruby
@@ -242,7 +252,7 @@ endif
 " -----------------------------------------------------------------------------
 
 " NERDTree ********************************************************************
-nmap <silent> <unique> <leader>n :NERDTreeToggle<CR>
+nmap <silent> <unique> <leader>r :NERDTreeToggle<CR>
 nmap <silent> <unique> <leader>/ :NERDTreeFind<CR>
 
 " User instead of Netrw when doing an edit /foobar
@@ -252,17 +262,17 @@ let NERDTreeHijackNetrw=1
 let NERDTreeMouseMode=1
 
 " Ignoring java class files
-let NERDTreeIgnore=['.class$', '\~$']
+let NERDTreeIgnore=['.class$', '\.rbc$', '\~$']
 
 " fuzzyfinder_textmate ********************************************************
-nmap <silent> <leader>f :FufFile<CR>
-nmap <silent> <leader>b :FufBuffer<CR>
+nmap <silent> <leader>R :FufFile<CR>
+nmap <silent> <leader>L :FufBuffer<CR>
 let g:fuzzy_ignore = '.o;.obj;.bak;.exe;.pyc;.pyo;.DS_Store;.db'
 
 " Rails.vim shortcuts ********************************************************
-nmap <silent> <unique> <leader>s :.Rake<CR>
-nmap <silent> <unique> <leader>S :Rake<CR>
-nmap <silent> <unique> <leader>- :Rake -<CR>
+"nmap <silent> <unique> <leader>s :.Rake<CR>
+"nmap <silent> <unique> <leader>S :Rake<CR>
+"nmap <silent> <unique> <leader>- :Rake -<CR>
 
 " yankring*********************************************************************
 let g:yankring_history_dir = expand('$HOME/.vim/tmp')
@@ -483,24 +493,11 @@ set synmaxcol=2048
 " like an eternity.
 set timeoutlen=500
 
-
 " These commands open folds
 set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
 
-
 " Allow the cursor to go in to "invalid" places
 set virtualedit=all
-
-
-
-
-
-
-
-
-
-
-
 
 " Make command line two lines high
 set ch=1
@@ -519,7 +516,6 @@ set cpoptions=ces$
 
 " Set the status line the way I like it
 set stl=%f\ %m\ %r\ Line:\ %l/%L[%p%%]\ Col:\ %c\ Buf:\ #%n\ [%b][0x%B]
-
 
 " Hide the mouse pointer while typing
 set mousehide
@@ -576,10 +572,6 @@ set showmode
 " with +wildmenu.  See :help 'wildmenu'
 set wildmenu
 "================
-" In many terminal emulators the mouse works just fine, thus enable it.
-if has('mouse')
-  set mouse=a
-endif
  
 set ruler       " show the cursor position all the time
 set showcmd     " display incomplete commands
@@ -660,7 +652,7 @@ set directory=~/.vim/backup
 hi Tab gui=underline guifg=blue ctermbg=blue 
 
 "no extension files are what? otl! 
-au BufNewFile,BufRead * if &ft == '' | set ft=otl | endif
+au BufNewFile,BufRead * if &ft == '' | set ft=markdown | endif
 
 " Default color scheme
 "color solarized
@@ -700,54 +692,29 @@ let maplocalleader = ","
         let g:ragtag_global_maps = 1
 "==========================================
 "  Markdown to HTML
-nmap <leader>md :%!/usr/local/bin/Markdown.pl --html4tags <cr>
+nmap <leader>G :%!/usr/local/bin/Markdown.pl --html4tags <cr>
 
 "Color change
-map <silent>\n :NEXTCOLOR<cr>
-map <silent>\p :PREVCOLOR<cr> 
+map <silent><leader>c :NEXTCOLOR<cr>
+map <silent><leader>C :PREVCOLOR<cr><ESC>
 "WINDOWS
 "=========================================
 "http://www.derekwyatt.org/vim/the-vimrc-file/walking-around-your-windows/
-" Move the cursor to the window left of the current one
-noremap <silent> ,y :wincmd h<cr>
-"noremap <silent> ,h :wincmd h<cr>
-"noremap <silent> ,u :wincmd h<cr>
 
-" Move the cursor to the window below the current one
-"noremap <silent> ,j :wincmd j<cr>
-
-" Move the cursor to the window above the current one
-"noremap <silent> ,k :wincmd k<cr>
-
-" Move the cursor to the window right of the current one
-noremap <silent> ,l :wincmd l<cr>
+noremap <silent> - <C-W>
+nmap <silent> <unique> <leader><leader> :wincmd w<cr>
 
 " Close the window below this one
-noremap <silent> ,sj :wincmd j<cr>:close<cr>
+noremap <silent> +J :wincmd j<cr>:close<cr>
 
 " Close the window above this one
-noremap <silent> ,sk :wincmd k<cr>:close<cr>
+noremap <silent> +K :wincmd k<cr>:close<cr>
 
 " Close the window to the left of this one
-noremap <silent> ,sh :wincmd h<cr>:close<cr>
+noremap <silent> +H :wincmd h<cr>:close<cr>
 
 " Close the window to the right of this one
-noremap <silent> ,sl :wincmd l<cr>:close<cr>
-
-" Close the current window
-noremap <silent> ,sc :close<cr>
-
-" Move the current window to the right of the main Vim window
-noremap <silent> ,el <C-W>L
-
-" Move the current window to the top of the main Vim window
-noremap <silent> ,ek <C-W>K
-
-" Move the current window to the left of the main Vim window
-noremap <silent> ,eh <C-W>H
-
-" Move the current window to the bottom of the main Vim window
-noremap <silent> ,ej <C-W>J
+noremap <silent> +L :wincmd l<cr>:close<cr>
 
 "=========================================
 "EDIT / SOURCES FILES
@@ -767,37 +734,17 @@ autocmd! bufwritepost $VIM/.vimrc source $VIM/.vimrc
 " Turn off that stupid highlight search
 nmap  <silent> <leader>z  :set invhlsearch
 " Set text wrapping toggles
-nmap  ,w :set invwrap:set wrap?
+nmap  ,] :set invwrap:set wrap?
 " Set up retabbing on a source file
-nmap  ,rr :1,$retab
+"nmap  ,rr :1,$retab
 
-" cd to the directory containing the file in the buffer
-nmap  ,cd :lcd %:h
-                                                       
-" Make the directory that contains the file in the current buffer.
-" This is useful when you edit a file in a directory that doesn't
-" (yet) exist
-nmap  ,md :!mkdir -p %:p:h
-"
-"=====================
-" NERDTree configuration
-let NERDTreeIgnore=['\.rbc$', '\~$']
-map <Leader>t :NERDTreeToggle<CR>
- 
 " ZoomWin configuration
-map <Leader><Leader> :ZoomWin<CR>
+"map <Leader><Leader> :ZoomWin<CR>
+map -- :ZoomWin<CR>
 
 " CTags
-map <Leader>rt :!ctags --extra=+f -R *<CR><CR>
+"map <Leader>rt :!ctags --extra=+f -R *<CR><CR>
 
-
-" Opens an edit command with the path of the currently edited file filled in
-" Normal mode: <Leader>e
-map <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
-
-" Opens a tab edit command with the path of the currently edited file filled in
-" Normal mode: <Leader>t
-map <Leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
 
 " Inserts the path of the currently edited file into a command
 "zsh:1: command not found: m
@@ -824,17 +771,13 @@ vnoremap > >gv
  
 " более логичное копирование во внутренний буфер
 nnoremap Y y<END>
- 
+
 " более логичная запись макроса
 nnoremap Q qq
- 
- 
+
 " поиск слова под курсором не целиком
- 
-"nnoremap * g*N
- 
- 
-"nnoremap # g#N
+nnoremap * g*N
+nnoremap # g#N
  
 " не перепрыгивать через длинные строки при включённом переносе строк
 nnoremap j gj
@@ -856,11 +799,15 @@ inoremap <PAGEDOWN> <C-O><C-D>
 vnoremap <PAGEUP> <C-U>
 vnoremap <PAGEDOWN> <C-D>
  
+" Inser New Line **************************************************************
 "Insert newline without entering insert mode
-map <S-Enter> O<Esc>
+"map <S-Enter> O<ESC> 
+map <S-Enter> i
 map <S-M-Enter> o<Esc>
-nnoremap <C-J> ciW<CR><Esc>:if match( @", "^\\s*$") < 0<Bar>exec "norm P-$diw+"<Bar>endif<CR>
- 
+map <M-Enter> O<Esc>
+nnoremap <C-I> ciW<CR><Esc>:if match( @", "^\\s*$") < 0<Bar>exec "norm P-$diw+"<Bar>endif<CR>
+   
+set fo-=r " do not insert a comment leader after an enter, (no work, fix!!)
 "(Shift)Enter to toggle INSERT
 function! ToggleEnterMapping()
   if empty(mapcheck('<CR>', 'i'))
@@ -873,16 +820,37 @@ function! ToggleEnterMapping()
 endfunction
 call ToggleEnterMapping()
 
+
+
 inoremap <expr> <S-CR> ToggleEnterMapping()
 " Optional (so <CR> cancels prefix, selection, operator).
 nnoremap <CR> <Esc>
 vnoremap <CR> <Esc>gV
 onoremap <CR> <Esc>
  
- 
+
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
 inoremap <C-U> <C-G>u<C-U>
 "пробелом перехд из normal в insert mode
-:nm <Space> i   
- 
+":nm <Space> i
+
+
+" CoffeeScript**************************************************************
+"Disable trailing whitespace error highlighting
+"If having trailing whitespace highlighted as an error is a bit much, the following line can be added to your ~/.vimrc to disable it:
+
+let coffee_no_trailing_space_error = 1
+
+"Disable trailing semicolon error highlighting
+"Likewise for the highlighting of trailing semicolons:
+
+let coffee_no_trailing_semicolon_error = 1
+
+"Disable future/reserved words error highlighting
+"The same for reserved words:
+
+let coffee_no_reserved_words_error = 1
+
+"js check
+cabbr js !js ~/bin/js/runjslint.js "`cat %`" \| ~/bin/python/format_lint_output.py
