@@ -1,3 +1,7 @@
+
+syn match NoSpell /\u\l\+\%(\u\l\+\)\+/ contains=@NoSpell
+syn match CamelCase "\<\%(\u\l*\)\{2,}\>" contains=@NoSpell
+syn match CamelCase2 transparent "\<\%(\u\l*\)\{2,}\>" contains=@NoSpell contained
 au Syntax * syn match CamelCase "\<\%(\u\l*\)\{2,}\>" transparent containedin=.*Comment.* contains=@NoSpell contained
 " -----------------------------------------------------------------------------
 " | VIM Settings |
