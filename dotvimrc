@@ -2,7 +2,20 @@
 " | VIM Settings |
 " | (see gvimrc for gui vim settings) |
 " -----------------------------------------------------------------------------
-iab verr version
+" F5: Add a fortune and advance to the next one
+" mX			mark where we are
+" :sp ~/.fortunes<CR>	open a window on ~/.fortunes
+" gg			go to first line
+" d/^--/<CR>		delete until the next line starting with "--"
+" Gp			Go to the end and put the just deleted text there
+" :wq<CR>		Write the ~/.fortunes file and close the window
+" 'XG			Go to the last line of the original file
+" A<CR><Esc>		Add an empty line
+" p			put the fortune text
+" `X			return to where we started
+
+map <leader>N mX:sp ~/.fortunes<CR>ggd/^--/<CR>Gp:wq<CR>'XGA<CR><Esc>p`X
+ab verr version
 iab winn windows
 
 let mapleader = ","
@@ -726,13 +739,13 @@ noremap <silent> +L :wincmd l<cr>:close<cr>
 
 "=========================================
 "EDIT / SOURCES FILES
-map ,v :vsp $MYVIMRC<CR>
+map ,v :vsp ~/git/github/vim-get/dotvimrc<CR>
 
 autocmd! bufwritepost $VIM/.vimrc source $VIM/.vimrc
 " And to source this file as well (mnemonic for the key sequence is
 " 's'ource 'v'imrc)
 "nmap <silent> ,sv :so $MYVIMRC<cr>
-map ,V :cd ~/git/github/vim-get<CR>:Rake install<CR>:source $MYVIMRC<CR>
+map ,V :cd ~/git/github/vim-get<CR>:!Rake install<CR>:source $MYVIMRC<CR>
 autocmd! bufwritepost $VIM/.vimrc source $VIM/.vimrc
 
 "TOGGLES
