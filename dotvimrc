@@ -854,3 +854,5 @@ let coffee_no_reserved_words_error = 1
 
 "js check
 cabbr js !js ~/bin/js/runjslint.js "`cat %`" \| ~/bin/python/format_lint_output.py
+" Additional  my additions to vimrc  ****************************
+so ~/txt/personal/myStuff.txt			
