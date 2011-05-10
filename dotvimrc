@@ -1,3 +1,4 @@
+au Syntax * syn match CamelCase "\<\%(\u\l*\)\{2,}\>" transparent containedin=.*Comment.* contains=@NoSpell contained
 " -----------------------------------------------------------------------------
 " | VIM Settings |
 " | (see gvimrc for gui vim settings) |
