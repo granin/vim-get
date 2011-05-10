@@ -2,6 +2,8 @@
 " | VIM Settings |
 " | (see gvimrc for gui vim settings) |
 " -----------------------------------------------------------------------------
+iab verr version
+iab winn windows
 
 let mapleader = ","
 set wildmenu
@@ -730,7 +732,7 @@ autocmd! bufwritepost $VIM/.vimrc source $VIM/.vimrc
 " And to source this file as well (mnemonic for the key sequence is
 " 's'ource 'v'imrc)
 "nmap <silent> ,sv :so $MYVIMRC<cr>
-map ,V :source $MYVIMRC<CR>
+map ,V :cd ~/git/github/vim-get<CR>:Rake install<CR>:source $MYVIMRC<CR>
 autocmd! bufwritepost $VIM/.vimrc source $VIM/.vimrc
 
 "TOGGLES

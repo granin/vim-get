@@ -1,4 +1,6 @@
 plugins:
+  soywiki:
+      git: git@github.com:granin/soywiki.git
   vim-project:
       git: git://github.com/shemerey/vim-project.git
   pathogen:
