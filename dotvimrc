@@ -879,7 +879,7 @@ cabbr js !js ~/bin/js/runjslint.js "`cat %`" \| ~/bin/python/format_lint_output.
 " Additional  my additions to vimrc  ****************************
 so ~/txt/personal/myStuff.txt			
  "------------------------------------------------------------------------
-
+"experimental try to switch off camel case syntax. 
 syn match NoSpell /\u\l\+\%(\u\l\+\)\+/ contains=@NoSpell
 syn match CamelCase "\<\%(\u\l*\)\{2,}\>" contains=@NoSpell
 syn match CamelCase2 transparent "\<\%(\u\l*\)\{2,}\>" contains=@NoSpell contained
