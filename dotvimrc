@@ -1,8 +1,4 @@
 
-syn match NoSpell /\u\l\+\%(\u\l\+\)\+/ contains=@NoSpell
-syn match CamelCase "\<\%(\u\l*\)\{2,}\>" contains=@NoSpell
-syn match CamelCase2 transparent "\<\%(\u\l*\)\{2,}\>" contains=@NoSpell contained
-au Syntax * syn match CamelCase "\<\%(\u\l*\)\{2,}\>" transparent containedin=.*Comment.* contains=@NoSpell contained
 " -----------------------------------------------------------------------------
 " | VIM Settings |
 " | (see gvimrc for gui vim settings) |
@@ -882,4 +878,10 @@ let coffee_no_reserved_words_error = 1
 cabbr js !js ~/bin/js/runjslint.js "`cat %`" \| ~/bin/python/format_lint_output.py
 " Additional  my additions to vimrc  ****************************
 so ~/txt/personal/myStuff.txt			
+ "------------------------------------------------------------------------
+
+syn match NoSpell /\u\l\+\%(\u\l\+\)\+/ contains=@NoSpell
+syn match CamelCase "\<\%(\u\l*\)\{2,}\>" contains=@NoSpell
+syn match CamelCase2 transparent "\<\%(\u\l*\)\{2,}\>" contains=@NoSpell contained
+au Syntax * syn match CamelCase "\<\%(\u\l*\)\{2,}\>" transparent containedin=.*Comment.* contains=@NoSpell contained
 
