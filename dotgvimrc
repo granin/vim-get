@@ -41,12 +41,11 @@ set lines=45
 set gtl=%t gtt=%F
 
 
-colorscheme solarized
 
 " Uncomment to use.
 set guioptions-=r                 " Don't show right scrollbar
 
-colorscheme solarized
+"colorscheme solarized
 "to have a different background in GUI and terminal modes, use the following if-then. However, I find vim's background autodetection to be pretty good and, at least with MacVim, I can leave this background value assignment out entirely and get the same results.
 if has('gui_running')
     set background=dark

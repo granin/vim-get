@@ -1,3 +1,25 @@
+set nocompatible               " be iMproved
+filetype off                   " required!
+
+set rtp+=~/.vim/vundle.git/ 
+call vundle#rc()
+
+" My Bundles here:
+"
+" original repos on github
+Bundle 'tpope/vim-fugitive'
+Bundle 'lokaltog/vim-easymotion'
+Bundle 'lokaltog/vim-easymotion'
+Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+" vim-scripts repos
+Bundle 'L9'
+Bundle 'FuzzyFinder'
+Bundle 'rails.vim'
+" non github repos
+Bundle 'git://git.wincent.com/command-t.git'
+" ...
+
+filetype plugin indent on     " required!
 
 " -----------------------------------------------------------------------------
 " | VIM Settings |
@@ -673,8 +695,8 @@ set directory=~/.vim/backup
 " Underlining search results in vim (instead of highlighting them)
 hi Tab gui=underline guifg=blue ctermbg=blue 
 
-"no extension files are what? otl! 
-au BufNewFile,BufRead * if &ft == '' | set ft=markdown | endif
+"no extension files are what?
+"au BufNewFile,BufRead * if &ft == '' | set ft=markdown | endif
 
 " Default color scheme
 "color solarized

@@ -1,7 +1,7 @@
 require 'rake'
 require 'yaml'
 
-SCRIPTS_WITH_RAKE = {'nerdtree' => 'install'}
+SCRIPTS_WITH_RAKE = {'Command-T' => 'make', 'nerdtree' => 'install'}
 FOLDERS = %w(colors spell ftdetect ftplugin indent syntax doc plugin autoload snippets macros after ruby)
 SCRIPTS = %w(personal CamelCaseMotion soywiki vim-project pathogen tabular vim-cucumber vim-rails vim-fugitive vim-haml ack.vim snipmate.vim vim-spec nerdcommenter vim-bufonly vim-endwise vim-surround vim-yankring vim-fuzzyfinder supertab rvm.vim vim-unimpaired vim-rake vim-javascript vim-autoclose vim-ruby-refactoring matchit vim-l9 cscope gundo conque netwr vim-align vimwiki ZoomWin Color-Sampler-Pack jslint.vim hammer.vim rvm_ruby.vim MailApp ScrollColors translit_converter vim-ragtag vim-bufexplorer vim-colors-solarized vim-coffee-script vim-easymotion gist-vim vim-jquery vim-indent-object vim-pastie vim-padrino vim-repeat vim-speeddating vim-markdown scss-syntax.vim sparkup vim-outliner vim-peepopen) + SCRIPTS_WITH_RAKE.keys
 DOTVIM = "#{ENV['HOME']}/.vim"

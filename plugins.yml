@@ -1,4 +1,6 @@
 plugins:
+ Command-T:
+    git: git://github.com/wincent/Command-T.git
   CamelCaseMotion:
       git: git://github.com/bkad/CamelCaseMotion.git
   soywiki:
@@ -16,7 +18,7 @@ plugins:
   ZoomWin:
       git: git://github.com/vim-scripts/ZoomWin.git
   Color-Sampler-Pack:
-    git: git://github.com/vim-scripts/Color-Sampler-Pack.git
+      git: git://github.com/vim-scripts/Color-Sampler-Pack.git
   jslint.vim:
     git: git://github.com/hallettj/jslint.vim.git
   hammer.vim:
