@@ -14,14 +14,14 @@ if has("gui_macvim")
   set encoding=utf-8                " Use UTF-8 everywhere.
   set guioptions-=T                 " Hide toolbar.
   set lines=85 columns=280          " Window dimensions.
-  set transparency=3
+  "set transparency=3
   macmenu &File.New\ Tab key=<nop>
 " map <D-t> :CommandT<CR>
   map <D-t> <Plug>PeepOpen
 
 elseif has("gui_gtk2")
 
-  set guifont=Courier\ 10\ pitch
+  "set guifont=Courier\ 10\ pitch
   set guioptions-=T " remove toolbar
 
 elseif has("x11")
@@ -48,9 +48,9 @@ set guioptions-=r                 " Don't show right scrollbar
 "colorscheme solarized
 "to have a different background in GUI and terminal modes, use the following if-then. However, I find vim's background autodetection to be pretty good and, at least with MacVim, I can leave this background value assignment out entirely and get the same results.
 if has('gui_running')
-    set background=dark
-else
     set background=light
+else
+    set background=dark
 endif
 
 

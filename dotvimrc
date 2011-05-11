@@ -1,3 +1,6 @@
+  nmap <silent> <Leader>i :CommandT<CR>
+  nmap <silent> <Leader>I :CommandTBuffer<CR>
+
 set nocompatible               " be iMproved
 filetype off                   " required!
 
@@ -256,7 +259,7 @@ set vb t_vb= " Turn off the bell, this could be more annoying, but I'm not sure 
 " подсвечивать некоторые символы
 " Set list Chars - for showing characters that are not
 " normally displayed i.e. whitespace, tabs, EOL
-nmap <unique><leader>i :set list!<CR>
+nmap <unique><leader>K :set list!<CR>
 " установим символы для подсветки
 if has("unix")
     set listchars=tab:❘-,trail:·,extends:»,precedes:«,nbsp:×
