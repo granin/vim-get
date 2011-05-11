@@ -1,48 +1,12 @@
-  nmap <silent> <Leader>i :CommandT<CR>
-  nmap <silent> <Leader>I :CommandTBuffer<CR>
 
 set nocompatible               " be iMproved
 filetype off                   " required!
 
-set rtp+=~/.vim/vundle.git/ 
-call vundle#rc()
-
-" My Bundles here:
-"
-" original repos on github
-Bundle 'tpope/vim-fugitive'
-Bundle 'lokaltog/vim-easymotion'
-Bundle 'lokaltog/vim-easymotion'
-Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
-" vim-scripts repos
-Bundle 'L9'
-Bundle 'FuzzyFinder'
-Bundle 'rails.vim'
-" non github repos
-Bundle 'git://git.wincent.com/command-t.git'
-" ...
-
-filetype plugin indent on     " required!
 
 " -----------------------------------------------------------------------------
 " | VIM Settings |
 " | (see gvimrc for gui vim settings) |
 " -----------------------------------------------------------------------------
-" F5: Add a fortune and advance to the next one
-" mX			mark where we are
-" :sp ~/.fortunes<CR>	open a window on ~/.fortunes
-" gg			go to first line
-" d/^--/<CR>		delete until the next line starting with "--"
-" Gp			Go to the end and put the just deleted text there
-" :wq<CR>		Write the ~/.fortunes file and close the window
-" 'XG			Go to the last line of the original file
-" A<CR><Esc>		Add an empty line
-" p			put the fortune text
-" `X			return to where we started
-
-map <leader>N mX:sp ~/.fortunes<CR>ggd/^--/<CR>Gp:wq<CR>'XGA<CR><Esc>p`X
-ab verr version
-iab winn windows
 
 let mapleader = ","
 set wildmenu
@@ -299,7 +263,7 @@ endif
 " -----------------------------------------------------------------------------
 
 " NERDTree ********************************************************************
-nmap <silent> <unique> <leader>r :NERDTreeToggle<CR>
+nmap <silent> <unique> <leader>U :NERDTreeToggle<CR>
 nmap <silent> <unique> <leader>/ :NERDTreeFind<CR>
 
 " User instead of Netrw when doing an edit /foobar
@@ -327,6 +291,8 @@ let g:yankring_history_dir = expand('$HOME/.vim/tmp')
 " Command-T *******************************************************************
 let g:CommandTMatchWindowAtTop = 1
 set wildignore+=*~,.DS_Store,*.class,*.gif,*.png,*.sqlite3,*.o,*.obj,.git,*.rbc
+nmap <silent> <Leader>r :CommandT<CR>
+nmap <silent> <Leader>I :CommandTBuffer<CR>
 
 " Gundo ***********************************************************************
 nmap <silent> <unique> <leader>u :GundoToggle<CR>
@@ -724,6 +690,8 @@ highlight tablinefill term=none cterm=none ctermbg=lightgray gui=none guibg=#D3D
 " дизайнерская рыба
 inoreabbrev lorem Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.<C-O>:call EatChar()<CR>
 " autocorrection 
+iab verr version
+iab winn windows
 iab US United States
 iab seva Seva
 iab sadhana Sadhana
